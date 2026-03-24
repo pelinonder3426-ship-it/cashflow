@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nakit Akışı Projeksiyonu</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/css/style.css">
+  </head>
+  <body class="bg-gray-50">
+    <div id="banner" class="fixed top-0 left-0 w-full z-[100] transform -translate-y-full transition-transform duration-300"></div>
+
+    <header class="header-gradient text-white py-6 px-4 shadow-lg">
+      <div class="container-max">
+        <h1 class="text-2xl font-extrabold tracking-tight">Nakit Akışı Projeksiyonu</h1>
+        <p class="text-xs opacity-80 font-medium mt-1">Ailenizin finansal geleceğini planlayın ve senaryoları test edin.</p>
+      </div>
+    </header>
+
+    <main class="container-max px-4 py-6">
+      <!-- Scenario Bar -->
+      <div class="card p-3 mb-6 flex flex-wrap gap-2 items-center justify-between">
+        <div class="flex items-center gap-2">
+          <select id="scenario-select" class="input py-1.5 px-3 font-bold text-[#0d7a4a] bg-green-50 border-green-200 w-auto">
+            <option value="Baz">Baz</option>
+          </select>
+          <button id="btn-save" class="bg-[#10b068] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#0d7a4a]">💾 Kaydet</button>
+          <button id="btn-save-as" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-700">📋 Farklı Kaydet</button>
+          <button id="btn-delete" class="bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-600">🗑️ Sil</button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btn-export-json" class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-50">📤 Dışarıya Aktar</button>
+          <button id="btn-import-json" class="border border-gray-300 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-50">📥 Dışarıdan Al</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex bg-gray-200 p-1 rounded-xl mb-6 w-fit">
+        <button id="tab-veri" class="px-6 py-2 rounded-lg text-xs font-bold transition-all bg-white text-[#0d7a4a] shadow-sm">Veri Girişi</button>
+        <button id="tab-sonuc" class="px-6 py-2 rounded-lg text-xs font-bold transition-all text-gray-600">Sonuçlar</button>
+      </div>
+
+      <!-- Content: Veri Girişi -->
+      <div id="content-veri">
+        <div class="card p-6 mb-6">
+          <h2 class="text-sm font-extrabold uppercase text-gray-400 mb-4 tracking-widest">Temel Bilgiler</h2>
+          <div id="form-temel"></div>
+          
+          <h2 class="text-sm font-extrabold uppercase text-gray-400 mb-4 mt-8 tracking-widest">Faiz Ayarları</h2>
+          <div id="form-faiz"></div>
+        </div>
+
+        <div class="card p-6 mb-6">
+          <div id="form-gelirler"></div>
+          <div id="form-giderler"></div>
+          <div id="form-donemsel"></div>
+          <div id="form-yillik"></div>
+        </div>
+
+        <div class="flex gap-4 mb-12">
+          <button id="btn-demo" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-200">📥 Demo Yükle</button>
+          <button id="btn-clear" class="flex-1 bg-red-50 text-red-600 py-3 rounded-xl font-bold hover:bg-red-100 border border-red-100">🗑️ Tüm Verileri Sil</button>
+          <button id="btn-goto-sonuc" class="flex-1 bg-[#10b068] text-white py-3 rounded-xl font-bold hover:bg-[#0d7a4a] shadow-lg">📊 Sonuçları Gör</button>
+        </div>
+      </div>
+
+      <!-- Content: Sonuçlar -->
+      <div id="content-sonuc" class="hidden">
+        <div id="summary-cards" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-6"></div>
+
+        <div class="card p-6 mb-6">
+          <h2 class="text-sm font-extrabold uppercase text-gray-400 mb-4 tracking-widest">Birikim Trendi</h2>
+          <div id="chart-container" class="w-full"></div>
+          <div id="extreme-cards"></div>
+        </div>
+
+        <div class="card p-6 mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-sm font-extrabold uppercase text-gray-400 tracking-widest">Aylık Nakit Akışı</h2>
+            <button id="btn-export-csv" class="bg-[#1a237e] text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-blue-900">📥 Excel'e Aktar</button>
+          </div>
+          <div id="table-container"></div>
+        </div>
+
+        <div class="flex gap-4 mb-12">
+          <button id="btn-goto-veri" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-200">⚙️ Verileri Düzenle</button>
+        </div>
+      </div>
+
+      <!-- External Tools -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+        <a href="https://chatgpt.com/g/g-WqrpxrYm4-budget-analyzer" target="_blank" class="bg-white border-1.5 border-gray-200 p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors">
+          <span class="text-lg">📊</span>
+          <span class="text-xs font-bold text-gray-700">Bütçe Analizi (ChatGPT)</span>
+        </a>
+        <a href="https://chatgpt.com/g/g-68a9f4bcd0dc8191a18d0052788da5e0-bank-interest-bank-charges-cb-24-25" target="_blank" class="bg-white border-1.5 border-gray-200 p-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors">
+          <span class="text-lg">🏦</span>
+          <span class="text-xs font-bold text-gray-700">Banka Faiz Oranları</span>
+        </a>
+      </div>
+    </main>
+
+    <!-- Modal Overlay -->
+    <div id="modal-overlay" class="fixed inset-0 z-[200] hidden items-center justify-center p-4">
+      <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+        <h3 id="modal-title" class="text-lg font-extrabold text-gray-800 mb-2"></h3>
+        <div id="modal-body" class="text-sm text-gray-600 mb-6"></div>
+        <div class="flex gap-3">
+          <button id="modal-cancel" class="flex-1 py-2 rounded-xl font-bold text-gray-500 hover:bg-gray-100">İptal</button>
+          <button id="modal-confirm" class="flex-1 py-2 rounded-xl font-bold bg-[#10b068] text-white hover:bg-[#0d7a4a]">Onayla</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/js/controller/app.js"></script>
+  </body>
+</html>
+
